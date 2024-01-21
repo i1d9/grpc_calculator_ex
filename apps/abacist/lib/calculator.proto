@@ -6,13 +6,7 @@ package abacus;
 // The Arithmetic service definition.
 service Calculator {
 
-  rpc Multiplication (ArithmeticRequest) returns (ArithmeticReply) {}
-
-  rpc Addition (ArithmeticRequest) returns (ArithmeticReply) {}
-
-  rpc Subtraction (ArithmeticRequest) returns (ArithmeticReply) {}
-
-  rpc Division (ArithmeticRequest) returns (ArithmeticReply) {}
+  rpc Calculate (ArithmeticRequest) returns (ArithmeticReply) {}
 
 
 }
