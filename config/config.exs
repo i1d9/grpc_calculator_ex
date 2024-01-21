@@ -17,5 +17,4 @@ import Config
 #       metadata: [:user_id]
 #
 
-
 config :abacist, Abacist.Calculate, hostname: "localhost:50000"

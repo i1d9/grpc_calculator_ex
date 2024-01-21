@@ -30,7 +30,59 @@ defmodule Abacist.Calculate do
     {:noreply, channel}
   end
 
+  @impl true
+  def handle_call({:calculate, %{a: a, b: b, type: type}}, _from, state) do
+    state.channel
+    |> Abacus.Calculator.Stub.calculate(%Abacus.ArithmeticRequest{
+      a: a,
+      b: b,
+      type: type
+    })
+    |> case do
+      {:ok, %Abacus.ArithmeticReply{result: result} = reply} ->
+        Logger.info("""
 
+        [ABACUS] Client Success:
+
+        Result: #{inspect(reply)}
+
+        """)
+
+        result
+
+      {:error, %GRPC.RPCError{status: status, message: message}} ->
+        Logger.error("""
+        [ABACUS] Client Error:
+
+        Error Status: #{inspect(status)}
+
+        Message: #{inspect(message)}
+
+        """)
+
+        {:error, message}
+
+      _ ->
+        0
+    end
+    |> then(&{:reply, {:ok, &1}, state})
+  end
+
+  def addition(a, b) do
+    GenServer.call(__MODULE__, {:calculate, %{a: a, b: b, type: "addition"}})
+  end
+
+  def subtraction(a, b) do
+    GenServer.call(__MODULE__, {:calculate, %{a: a, b: b, type: "subtraction"}})
+  end
+
+  def division(a, b) do
+    GenServer.call(__MODULE__, {:calculate, %{a: a, b: b, type: "division"}})
+  end
+
+  def multiplication(a, b) do
+    GenServer.call(__MODULE__, {:calculate, %{a: a, b: b, type: "division"}})
+  end
 
   defp config() do
     Application.fetch_env!(:abacist, __MODULE__)
