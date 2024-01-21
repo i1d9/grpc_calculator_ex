@@ -16,3 +16,6 @@ import Config
 #       format: "$date $time [$level] $metadata$message\n",
 #       metadata: [:user_id]
 #
+
+
+config :abacist, Abacist.Calculate, hostname: "localhost:50000"
